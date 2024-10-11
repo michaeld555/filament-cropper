@@ -5,7 +5,7 @@
     :label-sr-only="$isAvatar() || $isLabelHidden()"
     :helper-text="$getHelperText()"
     :hint="$getHint()"
-    :hint-action="$getHintAction()"
+
     :hint-color="$getHintColor()"
     :hint-icon="$getHintIcon()"
     :required="$isRequired()"
@@ -30,10 +30,10 @@
         <div
             x-data="fileUploadFormComponent({
             acceptedFileTypes: {{ json_encode($getAcceptedFileTypes()) }},
-            canDownload: {{ $canDownload() ? 'true' : 'false' }},
-            canOpen: {{ $canOpen() ? 'true' : 'false' }},
-            canPreview: {{ $canPreview() ? 'true' : 'false' }},
-            canReorder: {{ $canReorder() ? 'true' : 'false' }},
+            canDownload: {{ $isDownloadable() ? 'true' : 'false' }},
+            canOpen: {{ $isOpenable() ? 'true' : 'false' }},
+            canPreview: {{ $isPreviewable() ? 'true' : 'false' }},
+            canReorder: {{ $isReorderable() ? 'true' : 'false' }},
             deleteUploadedFileUsing: async (fileKey) => {
                 fileHasDeleted = true;
                 fileHasUploaded = false;
@@ -140,15 +140,15 @@
             id = $event.detail.id;
             $dispatch('open-modal', {id: id})
         ">
-        <x-filament-support::modal
+        <x-filament::modal
             class=""
             width="{{$getModalSize()}}"
             id="cropper-modal-{{ $getStatePath() }}"
         >
             <x-slot name="heading">
-                <x-filament-support::modal.heading>
+                <x-slot name="heading">
                     {{$getModalHeading()}}
-                </x-filament-support::modal.heading>
+                </x-slot>
             </x-slot>
             <div class=" z-5 w-full h-full flex flex-col justify-between"
 
@@ -308,14 +308,14 @@
                                             title="Zoom In"
                                             x-on:click.prevent="zoomByValue({{$getZoomStep()}})"
                                             type="button" class="action">
-                                            <x-heroicon-o-zoom-in class="w-4 h-4"/>
+                                            <x-heroicon-o-magnifying-glass-plus class="w-4 h-4"/>
                                         </button>
 
                                         <button
                                             title="Zoom Out"
                                             x-on:click.prevent="zoomByValue(-{{$getZoomStep()}})"
                                             type="button" class="action">
-                                            <x-heroicon-o-zoom-out class="w-4 h-4"/>
+                                            <x-heroicon-o-magnifying-glass-minus class="w-4 h-4"/>
                                         </button>
                                     </div>
                                 @endif
@@ -327,13 +327,13 @@
                 </div>
 
                 <div class="flex justify-center items-center gap-2">
-                    <x-filament-support::button type="button" x-on:click.prevent="uploadCropperImage()">
+                    <x-filament::button type="button" x-on:click.prevent="uploadCropperImage()">
                         @lang('filament::resources/pages/edit-record.form.actions.save.label')
-                    </x-filament-support::button>
+                    </x-filament::button>
                 </div>
             </div>
 
-        </x-filament-support::modal>
+        </x-filament::modal>
     </div>
 
 </x-dynamic-component>
